@@ -19,47 +19,47 @@ class SearchBar extends Component{
         super(props);   // component has theire own states
         
         this.state = {term: ""}  //setting the state  "this.setState"  : only way can update the state 
-        
-        
+  
     }
-    
-    
-    
-    
+ 
+ 
+        // update the state by functional handler
+        //input element tell whether change or not 
+        //  whenever input change => onChange function calls => onInputChange with new value
+ 
+ 
     render() {
         
         return (
-        
-        <input 
-            value={this.state.term}
-         onChange = {event => this.setState({term: event.target.value})} />   // update the state by functional handler
-        //input element tell whether change or not
+            
+            <div className="search-bar">
+            <input value={this.state.term}
+             onChange = {event => this.onInputChange(event.target.value)} /> 
+             
+            </div>
         );
     }
     
-    
-    
-/*
-how to handle the event handler
-1. declare the event handler
-2. pass event handler to the elements which you want to watch
-
-*/
-
-    /*
-    onInputChange(event){
-        console.log(event.target.value);
+    onInputChange(term){
+        this.setState({term});
+        this.props.onSearchTermChange(term);
+        
     }
-    */
-    
-}
-
+}    
 
 export default SearchBar;
 
+    
+/*
+//how to handle the event handler
+//1. declare the event handler
+//2. pass event handler to the elements which you want to watch
+
+*/
+
+
+  
 
 
 
-
-/*whenever state got changed, inside the component re-render */
-/*need to initialize the state*/
+//whenever state got changed, inside the component re-render ,need to initialize the state

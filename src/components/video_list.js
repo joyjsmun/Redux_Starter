@@ -5,7 +5,10 @@ const VideoList = (props) => {   // VideoList receive props
     // const video = props.video;
     
    const videoItems =  props.videos.map((video) => {
-        return <VideoListItem key = {video.etag} video={video} />
+        return <VideoListItem 
+                onVideoSelect = {props.onVideoSelect}   //'props' comes from App(index.js) to passing it down to videoItem component 
+                key = {video.etag} 
+                video={video} />
     });
     
     return (

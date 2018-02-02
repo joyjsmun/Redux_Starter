@@ -2,7 +2,9 @@ import React ,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import SearchBar from './components/search_bar';
 import YTSearch from 'youtube-api-search';
-import VideoList from './components/video_list'
+import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
+import _ from 'lodash';
 
 
 const API_KEY = 'AIzaSyBYa0Et0YG4NofVji1z9xEHndNjOYvsDLA';
@@ -25,13 +27,19 @@ class App extends Component{
   constructor(probs){   // whenever there is new search, we need to coduct 
     super(probs);
     
-    this.state = {videos :[] };   // empty array
-    
-YTSearch({key: API_KEY ,term :'surfboards'}, (videos) =>{  // when the search is done, they update the state
-    this.setState({videos});  // this.setState({videos；videos)
-    
-    console.log(videos);
-    
+    this.state = {videos :[],
+    selectedVideo : null 
+      };   // empty array   => selected video
+      
+      this.videoSearch('weezer'); // initial search term
+  }
+  
+videoSearch(term){
+  YTSearch({key: API_KEY ,term :term}, (videos) =>{  // when the search is done, they update the state
+    this.setState({
+      videos:videos,   // list of videos
+      selectedVideo:videos[0]
+    });  // this.setState({videos；videos)
   });
 }
   
@@ -40,10 +48,20 @@ YTSearch({key: API_KEY ,term :'surfboards'}, (videos) =>{  // when the search is
   /*whenever App rander, VideoList get the videos from App*/
   
   render(){
+    
+    const videoSearch = _.debounce((term) => {this.videoSearch(term)},300);
+    
+    
     return(
       <div>
-        <SearchBar />
-        <VideoList videos={this.state.videos}/>  
+        <SearchBar onSearchTermChange = { term => this.videoSearch(term)} />
+      <VideoDetail video={this.state.selectedVideo}/>
+        <VideoList 
+        //define a function for updating the App state.
+        //takes a video and it updates the selected video
+        onVideoSelect ={selectedVideo => this.setState({selectedVideo})} 
+        
+        videos = {this.state.videos} />  
         
          
       </div>
